@@ -2,10 +2,10 @@
 
 using namespace std;
 
-bool compareDates()
+bool compareDates(char* date1, char* date2)
 {
-    int intDate1[3] = { 2019, 9, 14 };
-    int intDate2[3] = { 2016, 3, 11 };
+    int intDate1[3] = { date1[0, 1, 2, 3], date1[5, 6], date1[8, 9] };
+    int intDate2[3] = { date2[0, 1, 2, 3], date2[5, 6], date2[8, 9] };
 
     int i = 0;
 
@@ -28,7 +28,6 @@ bool compareDates()
     }
 }
 
-
 bool compareDates2(char* date1, char* date2)
 {
     int result = strcmp(date1, date2);
@@ -46,10 +45,10 @@ bool compareDates2(char* date1, char* date2)
 
 int main()
 {
-    char date1 [] = "2019.09.14";
-    char date2 [] = "2016.03.11";
+    char date1 [] = "2015.09.14";
+    char date2 [] = "2015.04.11";
 
-    cout << compareDates() << endl;
+    cout << compareDates(date1, date2) << endl;
     cout << compareDates2(date1, date2) << endl;
 
     return 0;
