@@ -4,8 +4,18 @@ using namespace std;
 
 bool compareDates(char* date1, char* date2)
 {
-    int intDate1[3] = { 2019, 9, 14 };
-    int intDate2[3] = { 2016, 3, 11 };
+
+    int year1 = ((date1[0] - '0') * 1000) + ((date1[1] - '0') * 100) + ((date1[2] - '0') * 10) + (date1[3] - '0');
+    int year2 = ((date2[0] - '0') * 1000) + ((date2[1] - '0') * 100) + ((date2[2] - '0') * 10) + (date2[3] - '0');
+
+    int month1 = ((date1[5] - '0') * 10) + (date1[6] - '0');
+    int month2 = ((date2[5] - '0') * 10) + (date2[6] - '0');
+
+    int day1 = ((date1[8] - '0') * 10) + (date1[9] - '0');
+    int day2 = ((date2[8] - '0') * 10) + (date2[9] - '0');
+
+    int intDate1[3] = { year1, month1, day1 };
+    int intDate2[3] = { year2, month2, day2 };
 
     int i = 0;
 
@@ -45,8 +55,8 @@ bool compareDates2(char* date1, char* date2)
 
 int main()
 {
-    char date1 [] = "2015.09.14";
-    char date2 [] = "2015.04.11";
+    char date1 [] = "2017.10.30";
+    char date2 [] = "2017.12.15";
 
     cout << compareDates(date1, date2) << endl;
     cout << compareDates2(date1, date2) << endl;
