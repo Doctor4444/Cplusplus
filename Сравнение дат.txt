@@ -1,65 +1,228 @@
 #include <iostream>
+#include <string.h>
+#include <chrono>
 
 using namespace std;
 
-bool compareDates(char* date1, char* date2)
+int inputValidationYear(char* date1, char* date2)
 {
-
-    int year1 = ((date1[0] - '0') * 1000) + ((date1[1] - '0') * 100) + ((date1[2] - '0') * 10) + (date1[3] - '0');
-    int year2 = ((date2[0] - '0') * 1000) + ((date2[1] - '0') * 100) + ((date2[2] - '0') * 10) + (date2[3] - '0');
-
-    int month1 = ((date1[5] - '0') * 10) + (date1[6] - '0');
-    int month2 = ((date2[5] - '0') * 10) + (date2[6] - '0');
-
-    int day1 = ((date1[8] - '0') * 10) + (date1[9] - '0');
-    int day2 = ((date2[8] - '0') * 10) + (date2[9] - '0');
-
-    int intDate1[3] = { year1, month1, day1 };
-    int intDate2[3] = { year2, month2, day2 };
-
-    int i = 0;
-
-    if (intDate1[0] == intDate2[0] && intDate1[1] == intDate2[1] && intDate1[2] == intDate2[2])
+    if ( (date1[0] == '0' && date1[1] == '0' && date1[2] == '0' && date1[3] == '0') ||
+            (date2[0] == '0' && date2[1] == '0' && date2[2] == '0' && date2[3] == '0') )
     {
-        return true;
+        return 0;
     }
 
-    while (i < 3)
+    for (int i = 0; i < 4; i++)
     {
-        if (intDate1[i] > intDate2[i])
+        if (date1[i] < '0' || date1[i] > '9' ||
+            date2[i] < '0' || date2[i] > '9')
+        {
+            return 0;
+        }
+    }
+
+    if (date1[4] != '.' || date1[7] != '.' || date2[4] != '.' || date2[7] != '.')
+    {
+        return 0;
+    }
+    return 1;
+}
+
+int inputValidationMonth(char* date1, char* date2)
+{
+    if (date1[5] < '0'  || date1[5] > '1' || date2[5] < '0' || date2[5] > '1')
+    {
+        return 0;
+    }
+
+    if (date1[5] == '0')
+    {
+        if (date1[6] < '1' || date1[6] > '9')
+        {
+            return 0;
+        }
+    }
+
+    if (date2[5] == '0')
+    {
+        if (date2[6] < '1' || date2[6] > '9')
+        {
+            return 0;
+        }
+    }
+
+    if (date1[5] == '1')
+    {
+        if (date1[6] < '0' || date1[6] > '2')
+        {
+            return 0;
+        }
+    }
+
+    if (date2[5] == '1')
+    {
+        if (date2[6] < '0' || date2[6] > '2')
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int inputValidationDay(char* date1, char* date2)
+{
+    if (date1[8] == '0')
+    {
+        if (date1[9] < '1' || date1[9] > '9')
+        {
+            return 0;
+        }
+    }
+
+    if (date2[8] == '0')
+    {
+        if (date2[9] < '1' || date2[9] > '9')
+        {
+            return 0;
+        }
+    }
+
+    if (date1[8] == '3')
+    {
+        if (date1[9] < '0' || date1[9] > '1')
+        {
+            return 0;
+        }
+    }
+
+    if (date2[8] == '3')
+    {
+        if (date2[9] < '0' || date2[9] > '1')
+        {
+            return 0;
+        }
+    }
+
+    if (date1[8] < '1' || date1[8] > '2' ||
+        date2[8] < '1' || date2[8] > '2')
+    {
+        if (date1[9] < '0' || date1[9] > '9' ||
+            date2[9] < '0' || date2[9] > '9')
+        {
+            return 0;
+        }
+    }
+
+    if (date1[10] != '\0' || date2[10] != '\0')
+    {
+        return 0;
+    }
+    return 1;
+}
+
+bool compareDates(char* date1, char* date2)
+{
+        int year1 = ((date1[0] - '0') * 1000) + ((date1[1] - '0') * 100) + ((date1[2] - '0') * 10) + (date1[3] - '0');
+        int year2 = ((date2[0] - '0') * 1000) + ((date2[1] - '0') * 100) + ((date2[2] - '0') * 10) + (date2[3] - '0');
+
+        int month1 = ((date1[5] - '0') * 10) + (date1[6] - '0');
+        int month2 = ((date2[5] - '0') * 10) + (date2[6] - '0');
+
+        int day1 = ((date1[8] - '0') * 10) + (date1[9] - '0');
+        int day2 = ((date2[8] - '0') * 10) + (date2[9] - '0');
+
+        if ( (year1 < 1 || year1 > 9999) || (year2 < 1 || year2 > 9999) )
         {
             return false;
         }
-        else if (intDate1[i] < intDate2[i])
+
+        if ( (month1 < 1 || month1 > 12) || (month2 < 1 || month2 > 12) )
         {
-            return true;
+            return false;
         }
+
+        if ( ( day1 < 1 || day1 > 31) || (day1 < 1 || day2 > 31))
+        {
+            return false;
+        }
+
+        if (date1[4] != '.' || date1[7] != '.' || date2[4] != '.' || date2[7] != '.')
+        {
+            return 0;
+        }
+
+        if (date1[10] != '\0' || date2[10] != '\0')
+        {
+            return 0;
+        }
+
+        int intDate1[3] = { year1, month1, day1 };
+        int intDate2[3] = { year2, month2, day2 };
+
+        int i = 0;
+
+        while (i < 3)
+        {
+            if (intDate1[i] > intDate2[i])
+            {
+                return false;
+            }
+            else if (intDate1[i] < intDate2[i])
+            {
+                return true;
+            }
             i++;
-    }
+        }
+        return false;
 }
 
 bool compareDates2(char* date1, char* date2)
 {
-    int result = strcmp(date1, date2);
-
-    if (result > 0)
+    if (inputValidationYear(date1, date2) == 1 &&
+            inputValidationMonth(date1, date2) == 1 &&
+            inputValidationDay(date1, date2) == 1)
     {
-        return false;
+        int result = strcmp(date1, date2);
+
+        if (result >= 0)
+        {
+            return false;
+        }
+
+        else
+        {
+            return true;
+        }
     }
 
     else
     {
-        return true;
+        return false;
     }
 }
 
 int main()
-{
-    char date1 [] = "2017.10.30";
-    char date2 [] = "2017.12.15";
+{    
+    char date1[] = "2002.08.19";
+    char date2[] = "2002.08.19";
 
-    cout << compareDates(date1, date2) << endl;
-    cout << compareDates2(date1, date2) << endl;
-
+    auto start1 = std::chrono::high_resolution_clock::now();
+    for(int x = 0; x < 100000; x++)
+    {
+        cout << compareDates(date1, date2) << endl;
+    }
+    auto end1 = std::chrono::high_resolution_clock::now();
+    auto start2 = std::chrono::high_resolution_clock::now();
+    for(int y = 0; y < 100000; y++)
+    {
+        cout << compareDates2(date1, date2) << endl;
+    }
+    auto end2 = std::chrono::high_resolution_clock::now();
+    cout << "compareDates1 function took "
+         << std::chrono::duration_cast<std::chrono::milliseconds>(end1-start1).count()
+         << " milliseconds\n";
+    cout << "compareDates2 function took "
+         << std::chrono::duration_cast<std::chrono::milliseconds>(end2-start2).count()
+         << " milliseconds\n";
     return 0;
 }
