@@ -218,7 +218,7 @@ int main()
         cout << compareDates2(date1, date2) << endl;
     }
     auto end2 = std::chrono::high_resolution_clock::now();
-    cout << "compareDates function took "
+    cout << "compareDates1 function took "
          << std::chrono::duration_cast<std::chrono::milliseconds>(end1-start1).count()
          << " milliseconds\n";
     cout << "compareDates2 function took "
