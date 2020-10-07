@@ -258,8 +258,8 @@ int differenceDates(char* date1, char* date2)
 
 int main()
 {
-    char date1[] = ".01.01";
-    char date2[] = "2002.02.28";
+    char date1[] = "1902.04.01";
+    char date2[] = "2002.03.01";
 
     auto start1 = std::chrono::high_resolution_clock::now();
     for (int x = 0; x < 1; x++)
