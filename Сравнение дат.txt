@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string.h>
 #include <chrono>
+#include <ctime>
+#pragma warning(disable:4996)
 
 using namespace std;
 
@@ -197,7 +199,7 @@ bool compareDates2(char* date1, char* date2)
 
     else
     {
-        return false;
+    return false;
     }
 }
 
@@ -212,36 +214,11 @@ int differenceDates(char* date1, char* date2)
     int day1 = ((date1[8] - '0') * 10) + (date1[9] - '0');
     int day2 = ((date2[8] - '0') * 10) + (date2[9] - '0');
 
-    if ((year1 < 1 || year1 > 9999) || (year2 < 1 || year2 > 9999))
-    {
-        return false;
-    }
-
-    if ((month1 < 1 || month1 > 12) || (month2 < 1 || month2 > 12))
-    {
-        return false;
-    }
-
-    if ((day1 < 1 || day1 > 31) || (day1 < 1 || day2 > 31))
-    {
-        return false;
-    }
-
-    if (date1[4] != '.' || date1[7] != '.' || date2[4] != '.' || date2[7] != '.')
-    {
-        return 0;
-    }
-
-    if (date1[10] != '\0' || date2[10] != '\0')
-    {
-        return 0;
-    }
-
     int a1 = (14 - month1) / 12;
     int y1 = year1 + 4800 - a1;
     int m1 = month1 + 12 * a1 - 3;
     int JDN1 = day1 + ((153 * m1 + 2) / 5) + 365 * y1 + (y1 / 4) - (y1 / 100) + (y1 / 400) - 32045;
- 
+
     int a2 = (14 - month2) / 12;
     int y2 = year2 + 4800 - a2;
     int m2 = month2 + 12 * a2 - 3;
@@ -256,10 +233,181 @@ int differenceDates(char* date1, char* date2)
     return difference;
 }
 
+int dayOfWeekDate1(char* date1)
+{
+    int year1 = ((date1[0] - '0') * 1000) + ((date1[1] - '0') * 100) + ((date1[2] - '0') * 10) + (date1[3] - '0');
+    int month1 = ((date1[5] - '0') * 10) + (date1[6] - '0');
+    int day1 = ((date1[8] - '0') * 10) + (date1[9] - '0');
+
+    std::tm time_in = { 0, 0, 0, // second, minute, hour
+    day1, month1 - 1, year1 - 1900 }; // 1-based day, 0-based month, year since 1900
+    std::time_t time_temp = std::mktime(&time_in);
+    const std::tm* time_out = std::localtime(&time_temp);
+
+    if (time_out->tm_wday != 0)
+    {
+        return time_out->tm_wday;
+    }
+    else
+    {
+        return 7;
+    }
+}
+
+int dayOfWeekDate2(char* date2)
+{
+    int year2 = ((date2[0] - '0') * 1000) + ((date2[1] - '0') * 100) + ((date2[2] - '0') * 10) + (date2[3] - '0');
+    int month2 = ((date2[5] - '0') * 10) + (date2[6] - '0');
+    int day2 = ((date2[8] - '0') * 10) + (date2[9] - '0');
+
+    std::tm time_in = { 0, 0, 0, // second, minute, hour
+        day2, month2 - 1, year2 - 1900 }; // 1-based day, 0-based month, year since 1900
+    std::time_t time_temp = std::mktime(&time_in);
+    const std::tm* time_out = std::localtime(&time_temp);
+
+    if (time_out->tm_wday != 0)
+    {
+        return time_out->tm_wday;
+    }
+    else
+    {
+        return 7;
+    }
+}
+
+int differenceWorkdays(char* date1, char* date2)
+{
+    int weeks = differenceDates(date1, date2) / 7;
+    int workdays;
+
+    if (dayOfWeekDate1(date1) - dayOfWeekDate2(date2) == 0)
+    {
+        workdays = weeks * 5;
+        return workdays;
+    }
+
+    if (dayOfWeekDate1(date1) == 1)
+    {
+        for (int i = 2; i < 7; i++)
+        {
+            if (dayOfWeekDate2(date2) == i)
+            {
+                workdays = weeks * 5 + (i - 1);
+                return workdays;
+            }
+        }
+        workdays = weeks * 5 + 5;
+        return workdays;
+    }
+
+    if (dayOfWeekDate1(date1) == 2)
+    {
+        if (dayOfWeekDate2(date2) == 1)
+        {
+            workdays = weeks * 5 + 4;
+            return workdays;
+        }
+
+        for (int i = 3; i < 7; i++)
+        {
+            if (dayOfWeekDate2(date2) == i)
+            {
+                workdays = weeks * 5 + (i - 2);
+                return workdays;
+            }
+        }
+        workdays = weeks * 5 + 4;
+        return workdays;
+    }
+
+    if (dayOfWeekDate1(date1) == 3)
+    {
+        for (int i = 1; i < 3; i++)
+        {
+            if (dayOfWeekDate2(date2) == i)
+            {
+                workdays = weeks * 5 + (i + 2);
+                return workdays;
+            }
+        }
+
+        for (int i = 4; i < 6; i++)
+        {
+            if (dayOfWeekDate2(date2) == i)
+            {
+                workdays = weeks * 5 + (i - 3);
+                return workdays;
+            }
+        }
+        workdays = weeks * 5 + 3;
+        return workdays;
+    }
+
+    if (dayOfWeekDate1(date1) == 4)
+    {
+        for (int i = 1; i < 4; i++)
+        {
+            if (dayOfWeekDate2(date2) == i)
+            {
+                workdays = weeks * 5 + (i + 1);
+                return workdays;
+            }
+        }
+
+        if (dayOfWeekDate2(date2) == 5)
+        {
+            workdays = weeks * 5 + 1;
+            return workdays;
+        }
+
+        workdays = weeks * 5 + 2;
+        return workdays;
+    }
+
+
+    if (dayOfWeekDate1(date1) == 5)
+    {
+        for (int i = 1; i < 5; i++)
+        {
+            if (dayOfWeekDate2(date2) == i)
+            {
+                workdays = weeks * 5 + i;
+                return workdays;
+            }
+        }
+
+        workdays = weeks * 5 + 1;
+        return workdays;
+    }
+
+    if (dayOfWeekDate1(date1) == 6 || dayOfWeekDate1(date1) == 7)
+    {
+        for (int i = 1; i < 6; i++)
+        {
+            if (dayOfWeekDate2(date2) == i)
+            {
+                workdays = weeks * 5 + (i - 1);
+                return workdays;
+            }
+        }
+
+        if (dayOfWeekDate2(date2) == 7)
+        {
+            workdays = weeks * 5;
+            return workdays;
+        }
+
+        workdays = weeks * 5 + 5;
+        return workdays;
+    }
+
+    return 0;
+}
+
 int main()
 {
-    char date1[] = "1902.04.01";
-    char date2[] = "2002.03.01";
+    char date1[] = "2020.09.06";
+    char date2[] = "2020.10.26";
 
     auto start1 = std::chrono::high_resolution_clock::now();
     for (int x = 0; x < 1; x++)
@@ -279,6 +427,20 @@ int main()
     cout << "compareDates2 function took "
         << std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2).count()
         << " milliseconds\n";
-    cout << "Date difference: " << differenceDates(date1, date2) << " days" << endl;
+
+    if (compareDates(date1, date2) == 1 && compareDates2(date1, date2) == 1)
+    {
+        cout << "Date difference: " << differenceDates(date1, date2) << " days" << endl;
+        cout << "Work days difference: " << differenceWorkdays(date1, date2) << " days" << endl;
+    }
+
+    else
+    {
+        return 0;
+    }
+
+    std::cout << "First date is this day of the week: " << dayOfWeekDate1(date1) << endl;
+    std::cout << "Second date is this day of the week: " << dayOfWeekDate2(date2) << endl;
+
     return 0;
 }
