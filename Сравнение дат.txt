@@ -465,34 +465,34 @@ float findMedian(int* num)
 int main()
 {
     char date1[] = "2020.09.13";
-    char date2[] = "2020.10.22";
+    char date2[] = "2020.11.14";
 
-    char date3[] = "2018.03.26";
-    char date4[] = "2019.04.14";
+    char date3[] = "2020.09.13";
+    char date4[] = "2014.10.14";
 
-    char date5[] = "2020.01.31";
-    char date6[] = "2020.12.31";
+    char date5[] = "2020.09.13";
+    char date6[] = "2020.09.14";
 
-    char date7[] = "2014.02.28";
-    char date8[] = "2017.06.04";
+    char date7[] = "2019.09.13";
+    char date8[] = "2020.09.14";
 
-    char date9[] = "2011.01.20";
-    char date10[] = "2011.01.31";
+    char date9[] = "2005.09.13";
+    char date10[] = "2020.09.14";
 
-    char date11[] = "2009.05.30";
-    char date12[] = "2009.11.15";
+    char date11[] = "2020.09.13";
+    char date12[] = "2020.09.14";
 
-    char date13[] = "2004.09.20";
-    char date14[] = "2020.03.04";
+    char date13[] = "2020.09.13";
+    char date14[] = "2004.10.21";
 
-    char date15[] = "2001.12.31";
-    char date16[] = "2002.04.02";
+    char date15[] = "2020.09.14";
+    char date16[] = "2010.09.30";
 
-    char date17[] = "2008.11.01";
-    char date18[] = "2010.04.31";
+    char date17[] = "2020.09.13";
+    char date18[] = "2020.09.13";
 
-    char date19[] = "2015.03.03";
-    char date20[] = "2019.09.13";
+    char date19[] = "2020.09.13";
+    char date20[] = "2000.09.14";
 
     auto start1 = std::chrono::high_resolution_clock::now();
     for (int x = 0; x < 1; x++)
@@ -519,87 +519,99 @@ int main()
         cout << "First date is this day of the week: " << dayOfWeekDate1(date1) << endl;
         cout << "Second date is this day of the week: " << dayOfWeekDate2(date2) << endl;
     }
-
-    int arr[10] = { differenceDates(date1, date2), differenceDates(date3, date4),  differenceDates(date5, date6),
-                    differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
-                    differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
-                    differenceDates(date19, date20) };
-
-    cout << "\nUnsorted Array: ";
-    for (int i = 0; i < 10; ++i) 
+    
+    if (inputValidationDay(date1, date2) == 1 && inputValidationMonth(date1, date2) == 1 && inputValidationYear(date1, date2) == 1 &&
+        inputValidationDay(date3, date4) == 1 && inputValidationMonth(date3, date4) == 1 && inputValidationYear(date3, date4) == 1 &&
+        inputValidationDay(date5, date6) == 1 && inputValidationMonth(date5, date6) == 1 && inputValidationYear(date5, date6) == 1 &&
+        inputValidationDay(date7, date8) == 1 && inputValidationMonth(date7, date8) == 1 && inputValidationYear(date7, date8) == 1 &&
+        inputValidationDay(date9, date10) == 1 && inputValidationMonth(date9, date10) == 1 && inputValidationYear(date9, date10) == 1 && 
+        inputValidationDay(date11, date12) == 1 && inputValidationMonth(date11, date12) == 1 && inputValidationYear(date11, date12) == 1 &&
+        inputValidationDay(date13, date14) == 1 && inputValidationMonth(date13, date14) == 1 && inputValidationYear(date13, date14) == 1 &&
+        inputValidationDay(date15, date16) == 1 && inputValidationMonth(date15, date16) == 1 && inputValidationYear(date15, date16) == 1 &&
+        inputValidationDay(date17, date18) == 1 && inputValidationMonth(date17, date18) == 1 && inputValidationYear(date17, date18) == 1 &&
+        inputValidationDay(date19, date20) == 1 && inputValidationMonth(date19, date20) == 1 && inputValidationYear(date19, date20) == 1)
     {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
+        int arr[10] = { differenceDates(date1, date2), differenceDates(date3, date4),  differenceDates(date5, date6),
+                differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
+                differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
+                differenceDates(date19, date20) };
 
-    auto start3 = std::chrono::high_resolution_clock::now();
-    for (int x = 0; x < 10000; x++)
-    {
-        int arr1[10] = { differenceDates(date1, date2), differenceDates(date3, date4), differenceDates(date5, date6),
-                         differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
-                         differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
-                         differenceDates(date19, date20) };
-        insertionSort(arr1, 10);
-        cout << "\nSorted Array by Insertion Sort: ";
+        cout << "\nUnsorted Array: ";
         for (int i = 0; i < 10; ++i)
         {
-            cout << arr1[i] << " ";
+            cout << arr[i] << " ";
         }
         cout << endl;
-        cout << "Arithmetic Mean: " << arithmeticMean(arr1, 10) << endl;
-        cout << "Median: " << findMedian(arr1) << endl;
-    }
-    auto end3 = std::chrono::high_resolution_clock::now();
 
-    auto start4 = std::chrono::high_resolution_clock::now();
-    for (int x = 0; x < 10000; x++)
-    {
-        int arr2[10] = { differenceDates(date1, date2), differenceDates(date3, date4),  differenceDates(date5, date6),
-                         differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
-                         differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
-                         differenceDates(date19, date20) };
-        selectionSort(arr2, 10);
-        cout << "\nSorted Array by Selection Sort: ";
-        for (int i = 0; i < 10; ++i)
+        auto start3 = std::chrono::high_resolution_clock::now();
+        for (int x = 0; x < 10000; x++)
         {
-            cout << arr2[i] << " ";
+            int arr1[10] = { differenceDates(date1, date2), differenceDates(date3, date4), differenceDates(date5, date6),
+                             differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
+                             differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
+                             differenceDates(date19, date20) };
+            insertionSort(arr1, 10);
+            cout << "\nSorted Array by Insertion Sort: ";
+            for (int i = 0; i < 10; ++i)
+            {
+                cout << arr1[i] << " ";
+            }
+            cout << endl;
+            cout << "Arithmetic Mean: " << arithmeticMean(arr1, 10) << endl;
+            cout << "Median: " << findMedian(arr1) << endl;
         }
-        cout << endl;
-        cout << "Arithmetic Mean: " << arithmeticMean(arr2, 10) << endl;
-        cout << "Median: " << findMedian(arr2) << endl;
-    }
-    auto end4 = std::chrono::high_resolution_clock::now();
+        auto end3 = std::chrono::high_resolution_clock::now();
 
-    auto start5 = std::chrono::high_resolution_clock::now();
-    for (int x = 0; x < 10000; x++)
-    {
-        int arr3[10] = { differenceDates(date1, date2), differenceDates(date3, date4), differenceDates(date5, date6),
-                         differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
-                         differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
-                         differenceDates(date19, date20) };
-        bubbleSort(arr3, 10);
-        cout << "\nSorted Array by Bubble Sort: ";
-        for (int i = 0; i < 10; ++i)
+        auto start4 = std::chrono::high_resolution_clock::now();
+        for (int x = 0; x < 10000; x++)
         {
-            cout << arr3[i] << " ";
+            int arr2[10] = { differenceDates(date1, date2), differenceDates(date3, date4),  differenceDates(date5, date6),
+                             differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
+                             differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
+                             differenceDates(date19, date20) };
+            selectionSort(arr2, 10);
+            cout << "\nSorted Array by Selection Sort: ";
+            for (int i = 0; i < 10; ++i)
+            {
+                cout << arr2[i] << " ";
+            }
+            cout << endl;
+            cout << "Arithmetic Mean: " << arithmeticMean(arr2, 10) << endl;
+            cout << "Median: " << findMedian(arr2) << endl;
         }
-        cout << endl;
-        cout << "Arithmetic Mean: " << arithmeticMean(arr3, 10) << endl;
-        cout << "Median: " << findMedian(arr3) << endl;
+        auto end4 = std::chrono::high_resolution_clock::now();
+
+        auto start5 = std::chrono::high_resolution_clock::now();
+        for (int x = 0; x < 10000; x++)
+        {
+            int arr3[10] = { differenceDates(date1, date2), differenceDates(date3, date4), differenceDates(date5, date6),
+                             differenceDates(date7, date8), differenceDates(date9, date10), differenceDates(date11, date12),
+                             differenceDates(date13, date14), differenceDates(date15, date16), differenceDates(date17, date18),
+                             differenceDates(date19, date20) };
+            bubbleSort(arr3, 10);
+            cout << "\nSorted Array by Bubble Sort: ";
+            for (int i = 0; i < 10; ++i)
+            {
+                cout << arr3[i] << " ";
+            }
+            cout << endl;
+            cout << "Arithmetic Mean: " << arithmeticMean(arr3, 10) << endl;
+            cout << "Median: " << findMedian(arr3) << endl;
+        }
+        auto end5 = std::chrono::high_resolution_clock::now();
+
+        cout << "insertionSort function took "
+            << std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3).count()
+            << " milliseconds\n";
+
+        cout << "selectionSort function took "
+            << std::chrono::duration_cast<std::chrono::milliseconds>(end4 - start4).count()
+            << " milliseconds\n";
+
+        cout << "bubbleSort function took "
+            << std::chrono::duration_cast<std::chrono::milliseconds>(end5 - start5).count()
+            << " milliseconds\n";
     }
-    auto end5 = std::chrono::high_resolution_clock::now();
-
-    cout << "insertionSort function took "
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3).count()
-        << " milliseconds\n";
-
-    cout << "selectionSort function took "
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end4 - start4).count()
-        << " milliseconds\n";
-
-    cout << "bubbleSort function took "
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end5 - start5).count()
-        << " milliseconds\n";
 
     return 0;
 }
